@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechFest Sports Registration</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Header -->
+    <header class="bg-blue-600 text-white text-center py-4 text-2xl font-bold">
+        TechFest Sports Registration
+    </header>
+
+    <!-- Main Content -->
+    <div class="flex justify-center items-center min-h-screen">
+        <div class="bg-white shadow-lg rounded-lg p-6 w-full max-w-md">
+            <h2 class="text-xl font-semibold text-center mb-4">Register Here</h2>
+
+            <form id="registrationForm">
+                <!-- ID -->
+                <label class="block mb-2">ID (B0001-B2000)</label>
+                <input type="text" id="id" class="w-full p-2 border rounded mb-3" placeholder="B0001" required pattern="B[0-9]{4}">
+
+                <!-- Name -->
+                <label class="block mb-2">Name</label>
+                <input type="text" id="name" class="w-full p-2 border rounded mb-3" placeholder="John Doe" required>
+
+                <!-- Year -->
+                <label class="block mb-2">Year</label>
+                <select id="year" class="w-full p-2 border rounded mb-3">
+                    <option value="E1">E1</option>
+                    <option value="E2">E2</option>
+                    <option value="E3">E3</option>
+                    <option value="E4">E4</option>
+                </select>
+
+                <!-- Department -->
+                <label class="block mb-2">Department</label>
+                <select id="department" class="w-full p-2 border rounded mb-3">
+                    <option value="CSE">CSE</option>
+                    <option value="ECE">ECE</option>
+                    <option value="EEE">EEE</option>
+                    <option value="CE">CE</option>
+                    <option value="CHE">CHE</option>
+                    <option value="MME">MME</option>
+                </select>
+
+                <!-- Class -->
+                <label class="block mb-2">Class</label>
+                <select id="class" class="w-full p-2 border rounded mb-3">
+                    <option value="C1">C1</option>
+                    <option value="C2">C2</option>
+                    <option value="C3">C3</option>
+                    <option value="C4">C4</option>
+                </select>
+
+                <!-- Sport -->
+                <label class="block mb-2">Sport/Game</label>
+                <select id="sport" class="w-full p-2 border rounded mb-3">
+                    <option>Cricket</option>
+                    <option>Football</option>
+                    <option>Basketball</option>
+                    <option>Badminton</option>
+                    <option>Table Tennis</option>
+                    <option>Volleyball</option>
+                    <option>Chess</option>
+                    <option>Kabaddi</option>
+                    <option>Athletics</option>
+                    <option>Carrom</option>
+                </select>
+
+                <!-- Mobile Number -->
+                <label class="block mb-2">Mobile No (10 Digits)</label>
+                <input type="text" id="mobile" class="w-full p-2 border rounded mb-3" placeholder="9876543210" required pattern="\d{10}">
+
+                <!-- Buttons -->
+                <div class="flex justify-between">
+                    <button type="button" id="resetBtn" class="bg-red-500 text-white px-4 py-2 rounded">Reset</button>
+                    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-white p-6 rounded-lg text-center">
+            <p id="modalText" class="mb-4 text-lg"></p>
+            <button id="closeModal" class="bg-blue-500 text-white px-4 py-2 rounded">OK</button>
+        </div>
+    </div>
+
+    <script>
+        const sheetURL = "YOUR_GOOGLE_SHEET_WEB_APP_URL";
+
+        $(document).ready(function () {
+            // Reset button with confirmation
+            $("#resetBtn").click(function () {
+                if (confirm("Are you sure you want to reset?")) {
+                    $("#registrationForm")[0].reset();
+                }
+            });
+
+            // Form submission with AJAX
+            $("#registrationForm").submit(function (e) {
+                e.preventDefault();
+
+                let formData = {
+                    id: $("#id").val(),
+                    name: $("#name").val(),
+                    year: $("#year").val(),
+                    department: $("#department").val(),
+                    class: $("#class").val(),
+                    sport: $("#sport").val(),
+                    mobile: $("#mobile").val()
+                };
+
+                $.post(sheetURL, formData, function (response) {
+                    if (response.status === "duplicate") {
+                        $("#modalText").text("Error: Duplicate ID or Mobile Number!");
+                    } else {
+                        $("#modalText").text("Registration Successful!");
+                        $("#registrationForm")[0].reset();
+                    }
+                    $("#modal").removeClass("hidden");
+                }, "json");
+            });
+
+            // Close Modal
+            $("#closeModal").click(function () {
+                $("#modal").addClass("hidden");
+            });
+        });
+    </script>
+
+</body>
+</html>
