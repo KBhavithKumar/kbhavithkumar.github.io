@@ -26,7 +26,7 @@ $(document).ready(function() {
         };
 
         $.ajax({
-url : "https://script.google.com/macros/s/AKfycbzEOAGzG6zEwssZ0DyRDrCNf1iTUNY-Y6lQePqMjzke9U9qGEuphq1Nw1auQ6XKWS1Z9g/exec",
+url : "https://script.google.com/macros/s/AKfycbxSraJuSbZTeHtaVnUjAhQ9TlZn9Xgtv3EG6hRDNaMEwxhGSd4WH0OMVUUiWtfWLMYeTg/exec",
             type: "POST",
             data: formData,
             success: function(response) {
