@@ -88,6 +88,44 @@
         <p>© 2025 TechFest Registration | Developed by Bhavith Kumar</p>
     </footer>
 
-<script src="script.js"></script>
+<script>
+    $(document).ready(function() {
+    $("#registrationForm").submit(function(event) {
+        event.preventDefault();
+
+        let id = $("#id").val();
+        let name = $("#name").val();
+        let mobile = $("#mobile").val();
+        
+        if (!/^B\d{4}$/.test(id)) {
+            alert("Invalid ID format! Example: B0001");
+            return;
+        }
+
+        if (!/^\d{10}$/.test(mobile)) {
+            alert("Invalid Mobile Number!");
+            return;
+        }
+
+        let formData = {
+            id: id,
+            name: name,
+            year: $("#year").val(),
+            department: $("#department").val(),
+            class: $("#class").val(),
+            mobile: mobile
+        };
+
+        $.ajax({
+url : "https://script.google.com/macros/s/AKfycbzh1Bxqxoaf34ZA6yaQfJGwCUkx3jWYbsPxyjCeWHIrLwgbWaUC62cCfv5gMi1aRXZW8g/exec",
+            type: "POST",
+            data: formData,
+            success: function(response) {
+                $("#alertBox").text("Registration Successful!").fadeIn().delay(2000).fadeOut();
+            }
+        });
+    });
+});
+</script>
 </body>
 </html>
